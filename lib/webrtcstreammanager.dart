@@ -6,17 +6,13 @@ import "cachingusermediaretriever.dart";
 
 class WebRtcStreamManager {
   WebSocket webSocket;
-  var sendingRtcPeerConnections;
-  var receivingRtcPeerConnections;
-  var cachingUserMediaRetriever;
+  var sendingRtcPeerConnections = new Map<int, RtcPeerConnection>();
+  var receivingRtcPeerConnections = new Map<int, RtcPeerConnection>();
+  var cachingUserMediaRetriever = new CachingUserMediaRetriever();
   var streamAddHandler;
   var streamRemoveHandler;
   
   WebRtcStreamManager() {
-    sendingRtcPeerConnections = new Map();
-    receivingRtcPeerConnections = new Map();
-    cachingUserMediaRetriever = new CachingUserMediaRetriever();
-    
     var uri = "ws://" + window.location.host + "/ws";
     log("Creating websocket to: '$uri'");
     webSocket = new WebSocket(uri);
@@ -52,7 +48,7 @@ class WebRtcStreamManager {
     log("Websocket closed");
   }
 
-  void handleMessage(message) {
+  void handleMessage(MessageEvent message) {
     var parsedData = JSON.decode(message.data);
     var messageType = parsedData["type"];
     var originClientId = parsedData["originClientId"];
@@ -93,7 +89,7 @@ class WebRtcStreamManager {
   }
 
   void createSendingRtcPeerConnection(id) {
-    RtcPeerConnection sendingRtcPeerConnection = createRtcPeerConnection();; 
+    RtcPeerConnection sendingRtcPeerConnection = createRtcPeerConnection();
     sendingRtcPeerConnections[id] = sendingRtcPeerConnection;
     cachingUserMediaRetriever.get().then((MediaStream stream) {
       sendingRtcPeerConnection.addStream(stream);

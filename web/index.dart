@@ -9,11 +9,11 @@ var cssClassFadeInDown = "animated fadeInDown";
 var cssClassAddVideo = "animated flipInY";
 var cssClassRemoveVideo = "animated bounceOutDown";
 
-var receivingVideoElements = new Map();
+var receivingVideoElements = new Map<int, VideoElement>();
 
 void main() {
   WebRtcStreamManager webRtcStreamManager = new WebRtcStreamManager();
-  webRtcStreamManager.setStreamAddHandler((clientId, MediaStream stream) {
+  webRtcStreamManager.setStreamAddHandler((clientId, stream) {
     hideTitle(() {
       addVideo(clientId, stream);
     });

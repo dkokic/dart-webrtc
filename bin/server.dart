@@ -10,9 +10,9 @@ FileHandler fileHandler = new FileHandler();
 WebSocketHandler webSocketHandler = new WebSocketHandler();
 
 void main() {
-  print("Starting server");
+  print("main(): Binding HttpServer on ${bindAddress}:${port} ...");
   HttpServer.bind(bindAddress, port).then((HttpServer server) {
-    print("Listening for connections at $bindAddress:$port");
+    print("main(): HttpServer listening for connections at ${server.address}, port ${server.port}");
     server.listen((request) { 
       handleRequest(request);
     });
