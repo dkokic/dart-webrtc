@@ -10,6 +10,10 @@ FileHandler fileHandler = new FileHandler();
 WebSocketHandler webSocketHandler = new WebSocketHandler();
 
 void main() {
+  print("main(): Platform.environment = ${Platform.environment}");
+  if (Platform.environment.containsKey('PORT')) {
+      port = int.parse(Platform.environment['PORT']);
+  }
   print("main(): Binding HttpServer on ${bindAddress}:${port} ...");
   HttpServer.bind(bindAddress, port).then((HttpServer server) {
     print("main(): HttpServer listening for connections at ${server.address}, port ${server.port}");
